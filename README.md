@@ -1,4 +1,4 @@
-# condjs
+# clojure-cond-js
 Inspired by clojure's `cond` and `condp` functions, this library is meant to offer a few options for writing multi-branch conditionals in a fairly-concise way.
 
 ## cond
