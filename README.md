@@ -1,6 +1,19 @@
 # clojure-cond-js
 Inspired by clojure's `cond` and `condp` functions, this library is meant to offer a few options for writing multi-branch conditionals in a fairly-concise way.
 
+### Installation
+```sh
+npm i clojure-cond-js
+```
+### Usage
+```
+import cond from 'clojure-cond-js';
+...
+cond._(...)
+cond.p(...)
+cond.o(...)
+```
+
 ## cond
 Takes predicate-callback pairs plus an additional callback and invokes the first callback for which its respective predicate
 returns a truthy value.  If all pairs return falsey values, the fallback parameter will be invoked.
