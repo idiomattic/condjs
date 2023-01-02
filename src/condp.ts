@@ -25,12 +25,6 @@ const condp = (
   while (!returned && i < pairs.length) {
     const [expr, match] = pairs[i];
     const predResult = predicate(expr);
-    // Slightly different from Clojure's implementation right now
-    // the predicate here must always return a boolean,
-    // rather than just a truthy or a falsey.
-    // Having the match be a function may not be too useful because
-    // it will always receive true or false.
-    // TODO: allow looser definition of predicate
 
     if (predResult) {
       returned = true;
