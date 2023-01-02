@@ -6,6 +6,7 @@ import { condPairs } from './types';
  * @param pairs [[predicate | boolean, callback], [...], ...]
  */
 const condo = (pairs: condPairs): void => {
+  let returnValue;
   pairs.forEach((pair) => {
     const [test, cb] = pair;
     let testRes;
@@ -14,8 +15,12 @@ const condo = (pairs: condPairs): void => {
     } else if (typeof test === 'function') {
       testRes = test();
     }
-    if (testRes === true) cb();
+    if (testRes === true) {
+      const cbRes = cb();
+      returnValue = cbRes;
+    }
   });
+  return returnValue;
 };
 
 export default condo;
