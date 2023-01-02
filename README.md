@@ -8,7 +8,7 @@ Returns the return value of whichever callback was invoked.
 
 Useful for multi-branch conditionals
 ```
-const condTest = cond(
+const condTest = cond._(
   [
     [
       'true',                             // a logical true
@@ -36,7 +36,7 @@ If there are no matches, the fallback is invoked and result (or null) is returne
 
 Useful for setting the value of a variable based on logic that is a little too complex for a ternary, etc.
 ```
-const condpTest = condp(
+const condpTest = cond.p(
   (n) => n === 4,
   [
     [1, 'one'],
@@ -50,7 +50,7 @@ const condpTest = condp(
 
 ...
 
-const condpTest = condp(
+const condpTest = cond.p(
   (arr) => arr.length,
   [
     [[], (l) => l],        // won't be invoked, [].length is falsey
@@ -67,7 +67,7 @@ Returns return value from last matching clause, or undefined.
 
 Could be useful for situations where any number of side effects are desired based on different conditions.
 ```
-const condoTest = condo([
+const condoTest = cond.o([
   [true, () => console.log('true')],    // will be logged
   [false, () => console.log('false')],
   [
