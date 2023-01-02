@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { unarypred, condpPairs, callback } from './types';
 
 /**
@@ -7,7 +6,7 @@ import { unarypred, condpPairs, callback } from './types';
  * If the predicate returns a truthy, that pair's second element is the match.
  * The match may be an expression to return, or a callback which will receive
  * the truthy value and return a final value from condp.
- * If there are no matches, the fallback is invoked and result (or null) is returned when provided 
+ * If there are no matches, the fallback is invoked and result (or null) is returned when provided
  * or an exception is thrown when not provided.
  * @param predicate arg => truthy/falsey
  * @param pairs [[any, expression | callback], [...], ...]
@@ -15,7 +14,7 @@ import { unarypred, condpPairs, callback } from './types';
  */
 const condp = (
   predicate: unarypred,
-  pairs: condpPairs, 
+  pairs: condpPairs,
   fallback?: callback
 ): any => {
   let i = 0;
@@ -29,19 +28,19 @@ const condp = (
     if (predResult) {
       returned = true;
       typeof match === 'function'
-        ? returnValue = match(predResult) || null
-        : returnValue = match;
+        ? (returnValue = match(predResult) || null)
+        : (returnValue = match);
     } else {
       i += 1;
-    };
-  };
+    }
+  }
 
   if (!returned) {
     if (fallback) {
       return fallback() || null;
-    };
-    throw new Error("No expression matched and no fallback was provided")
-  };
+    }
+    throw new Error('No expression matched and no fallback was provided');
+  }
   return returnValue;
 };
 

@@ -1,4 +1,4 @@
-import { condPairs, callback } from './types';
+import { condPairs } from './types';
 
 /**
  * Takes predicate-callback tuples and invokes any/all callbacks
@@ -6,7 +6,7 @@ import { condPairs, callback } from './types';
  * @param pairs [[predicate | boolean, callback], [...], ...]
  */
 const condo = (pairs: condPairs): void => {
-  pairs.forEach(pair => {
+  pairs.forEach((pair) => {
     const [test, cb] = pair;
     let testRes;
     if (typeof test === 'boolean') {
@@ -15,7 +15,7 @@ const condo = (pairs: condPairs): void => {
       testRes = test();
     }
     if (testRes === true) cb();
-  })
+  });
 };
 
 export default condo;

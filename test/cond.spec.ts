@@ -2,19 +2,19 @@ import { assert } from 'chai';
 import { describe } from 'mocha';
 import cond from '../src/index';
 
-describe("cond tests", () => {
-  it("should run the callback in a branch with true as the test value instead of a predicate", () => {
-    let val: string = 'untouched';
+describe('cond tests', () => {
+  it('should run the callback in a branch with true as the test value instead of a predicate', () => {
+    let val = 'untouched';
     cond._(
       [
-        [true, () => val = 'true branch'],
-        [() => true, () => val = 'cb returns true'],
-        [false, () => val = 'false branch']
+        [true, () => (val = 'true branch')],
+        [() => true, () => (val = 'cb returns true')],
+        [false, () => (val = 'false branch')]
       ],
-      () => val = 'fallback reached'
+      () => (val = 'fallback reached')
     );
-    assert.equal(val, 'true branch')
-  })
+    assert.equal(val, 'true branch');
+  });
 });
 
 cond._(

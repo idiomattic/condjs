@@ -2,17 +2,25 @@ import cond from './cond';
 import condp from './condp';
 import condo from './condo';
 
-// cond(
-//   [
-//     [true, () => console.log('true')],
-//     [() => true, () => console.log('false cb')],
-//     [false, () => console.log("true, but shouldn't get here")]
-//   ],
-//   () => console.log('fallback')
-// );
+const condTest = cond(
+  [
+    [
+      'true',
+      () => {
+        console.log('true string');
+        return 'true string';
+      }
+    ],
+    [() => true, () => console.log('true cb')], // won't be called, would return undefined
+    [false, () => console.log('false')],
+    [true, () => console.log('true')] // won't be called, would return undefined
+  ],
+  () => console.log('fallback')
+);
+console.log({ condTest });
 
 // const condpTest = condp(
-//   arr => arr.length, 
+//   arr => arr.length,
 //   [[[], l => l], [4, "four"], [5, 'five'], [5, 'other five']],
 //   () => 4
 // )
@@ -31,4 +39,4 @@ export default {
   _: cond,
   p: condp,
   o: condo
-}
+};

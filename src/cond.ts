@@ -2,25 +2,29 @@ import { condPairs, callback } from './types';
 
 /**
  * Takes predicate-callback tuples and invokes the first callback for which its respective predicate
- * returns true.  If all pairs return false, the fallback parameter will be invoked.
+ * returns a truthy value.  If all pairs return falsey values, the fallback parameter will be invoked.
+ * Returns the return value of whichever callback was invoked.
  * @param pairs [[predicate | boolean, callback], [...], ...]
  * @param fallback callback
  */
-const cond = (pairs: condPairs, fallback: callback): void => {
+const cond = (pairs: condPairs, fallback: callback): any => {
   let i = 0;
-  let ret = false;
-  while (!ret && i < pairs.length) {
+  let returnValue;
+  let returned = false;
+
+  while (!returned && i < pairs.length) {
     const [test, cb] = pairs[i];
     let testRes;
-    if (typeof test === 'boolean') {
-      testRes = test;
-    } else if (typeof test === 'function') {
+    if (typeof test === 'function') {
       testRes = test();
+    } else {
+      testRes = test;
     }
-    if (testRes === true) ret = true;
-    ret ? cb() : (i += 1);
+    if (testRes) returned = true;
+    returned ? (returnValue = cb()) : (i += 1);
   }
-  if (!ret) fallback();
+  if (!returned) fallback();
+  return returnValue;
 };
 
 export default cond;
