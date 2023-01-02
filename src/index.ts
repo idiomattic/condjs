@@ -2,9 +2,8 @@ import cond from './cond';
 import condp from './condp';
 
 const test = condp(
-  (n1, n2) => n1 === n2, 
-  7, 
-  [[3, 'three'], [4, 'sadf'], [5, 'five'], [5, 'other five']],
+  arr => arr.length, 
+  [[[], l => l], [4, "four"], [5, 'five'], [5, 'other five']],
   () => 4
 )
 console.log({test})

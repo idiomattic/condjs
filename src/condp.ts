@@ -1,22 +1,20 @@
 import _ from 'lodash';
-import { binarypred, condpPairs, callback } from './types';
+import { unarypred, condpPairs, callback } from './types';
 
 /**
- * Takes binary predicate, an expression, pairs, and an additional fallback.
- * The expression is passed along with each pair's first element to the binary predicate.
+ * Takes unary predicate, pairs, and an additional fallback.
+ * Each pair's first element is passed to the predicate.
  * If the predicate returns a truthy, that pair's second element is the match.
- * The match may be an expression to return, or a callback which will receive the truthy value
- * and return a final value from condp.
+ * The match may be an expression to return, or a callback which will receive
+ * the truthy value and return a final value from condp.
  * If there are no matches, the fallback is invoked and result (or null) is returned when provided 
  * or an exception is thrown when not provided.
- * @param predicate (arg1, arg2) => truthy
- * @param expression
+ * @param predicate arg => truthy/falsey
  * @param pairs [[any, expression | callback], [...], ...]
  * @param fallback callback
  */
 const condp = (
-  predicate: binarypred, 
-  expression: any, 
+  predicate: unarypred,
   pairs: condpPairs, 
   fallback?: callback
 ): any => {
@@ -26,7 +24,7 @@ const condp = (
 
   while (!returned && i < pairs.length) {
     const [expr, match] = pairs[i];
-    const predResult = predicate(expression, expr);
+    const predResult = predicate(expr);
     // Slightly different from Clojure's implementation right now
     // the predicate here must always return a boolean,
     // rather than just a truthy or a falsey.
