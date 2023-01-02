@@ -1,6 +1,5 @@
 import _ from 'lodash';
-import {condPairs, callback} from './types';
-type binarypred = () => any;
+import { binarypred, condpPairs, callback } from './types';
 
 /**
  * Takes binary predicate, an expression, pairs, and an additional fallback.
@@ -8,32 +7,50 @@ type binarypred = () => any;
  * If the predicate returns a truthy, that pair's second element is the match.
  * The match may be an expression to return, or a callback which will receive the truthy value
  * and return a final value from condp.
- * If there are no matches, the fallback is invoked and result is returned when provided 
+ * If there are no matches, the fallback is invoked and result (or null) is returned when provided 
  * or an exception is thrown when not provided.
- * @param pairs [[predicate | boolean, callback], [...], ...]
- * @param pairs [[predicate | boolean, callback], [...], ...]
+ * @param predicate (arg1, arg2) => truthy
+ * @param expression
+ * @param pairs [[any, expression | callback], [...], ...]
  * @param fallback callback
  */
 const condp = (
   predicate: binarypred, 
   expression: any, 
-  pairs: condPairs, 
+  pairs: condpPairs, 
   fallback?: callback
-) => {
+): any => {
   let i = 0;
-  let ret = false;
-  while (!ret && i < pairs.length) {
-    const [test, cb] = pairs[i];
-    let testRes;
-    if (typeof test === 'boolean') {
-      testRes = test;
-    } else if (typeof test === 'function') {
-      testRes = test();
-    }
-    if (testRes === true) ret = true;
-    ret ? cb() : i += 1;
-  }
-  // if (!ret) fallback();
+  let returnValue;
+  let returned = false;
+
+  while (!returned && i < pairs.length) {
+    const [expr, match] = pairs[i];
+    const predResult = predicate(expression, expr);
+    // Slightly different from Clojure's implementation right now
+    // the predicate here must always return a boolean,
+    // rather than just a truthy or a falsey.
+    // Having the match be a function may not be too useful because
+    // it will always receive true or false.
+    // TODO: allow looser definition of predicate
+
+    if (predResult) {
+      returned = true;
+      typeof match === 'function'
+        ? returnValue = match(predResult) || null
+        : returnValue = match;
+    } else {
+      i += 1;
+    };
+  };
+
+  if (!returned) {
+    if (fallback) {
+      return fallback() || null;
+    };
+    throw new Error("No expression matched and no fallback was provided")
+  };
+  return returnValue;
 };
 
 export default condp;
