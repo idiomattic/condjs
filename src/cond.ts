@@ -6,7 +6,7 @@ import { condPairs, callback } from './types';
  * @param pairs [[predicate | boolean, callback], [...], ...]
  * @param fallback callback
  */
-const cond = (pairs: condPairs, fallback: callback) => {
+const cond = (pairs: condPairs, fallback: callback): void => {
   let i = 0;
   let ret = false;
   while (!ret && i < pairs.length) {
